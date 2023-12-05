@@ -1,0 +1,29 @@
+name: Cypress Tests
+
+on: push
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    env:
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 14
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm run test
+          npm start
+
+      - name: Run Cypress Tests
+        run: |
+          npm run test -- --record --key $CYPRESS_RECORD_KEY
